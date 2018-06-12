@@ -1,31 +1,28 @@
 import faCoffee from '@fortawesome/fontawesome-free-solid/faCoffee'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import * as React from 'react';
+import { Link, NavLink, Route, Switch } from 'react-router-dom';
 import './App.css';
-import Clock from './Clock/Clock';
-
+import BSTClock from './BSTClock/BSTClock';
+import ClockMessage from './ClockMessage/ClockMessage';
 import logo from './logo.svg';
+import TimezoneClock from './TimezoneClock/TimezoneClock';
 
 interface IAppState {
   time: number;
   value?: string;
 }
 
-
 class App extends React.Component<{}, IAppState> {
-  private timezones: Array<{ name: string, offset: number }>;
 
   constructor(props: any) {
     super(props);
     this.state = { time: new Date().getTime() };
     this.tick = this.tick.bind(this);
-    this.timezones = [
-      { name: 'EDT', offset: 240 },
-      { name: 'BST', offset: -60 },
-      { name: 'IST', offset: -330 },
-    ];
     setInterval(() => this.tick(), 1000);
     this.handleInput = this.handleInput.bind(this);
+    this.generateBSTClock = this.generateBSTClock.bind(this);
+    this.generateTimezoneClock = this.generateTimezoneClock.bind(this);
   }
 
   public handleInput(e: React.ChangeEvent<HTMLInputElement>) {
@@ -34,6 +31,14 @@ class App extends React.Component<{}, IAppState> {
   }
 
   public render() {
+    const activeStyle = {
+      border: '1px solid cyan'
+    };
+
+    const navLinkEasy = {
+      activeClassName: 'active',
+      activeStyle,
+    };
     return (
       <div className="App">
         <header className="App-header">
@@ -48,12 +53,45 @@ class App extends React.Component<{}, IAppState> {
           <input onChange={this.handleInput}/>
         </p>
         <p>You have typed: {this.state.value}</p>
-        {this.timezones.map(tz => <div key={tz.name}>
-            <Clock time={this.state.time}
-                   timezone={tz}/>
-          </div>)}
+
+        <ul>
+          <li>
+            <NavLink {...navLinkEasy} to="/BST">BST</NavLink>
+          </li>
+          <li>
+            <Link to="/EDT">EDT</Link>
+          </li>
+          <li>
+            <Link to="/IST">IST</Link>
+          </li>
+          <li>
+            <Link to="/MDT">MDT</Link>
+          </li>
+        </ul>
+
+        {/* <Route path="/BST" component={BSTClock}/>
+            <Route exact={true} path="/" component={ClockMessage}/> */}
+        <Switch>
+          <Route path="/BST" render={this.generateBSTClock}/>
+          <Route path="/:tz" render={this.generateTimezoneClock}/>
+          <Route component={ClockMessage}/>
+        </Switch>
       </div>
     );
+  }
+
+  private generateTimezoneClock(props: any) {
+    return <TimezoneClock time={this.state.time} {...props}/>
+    /*
+    React.createElement(
+      "TimezoneClock",
+      { time: ..., ...props }
+    )
+    */
+  }
+
+  private generateBSTClock() {
+    return <BSTClock time={this.state.time}/>
   }
 
   private tick() {
