@@ -1,7 +1,9 @@
 import faCoffee from '@fortawesome/fontawesome-free-solid/faCoffee'
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import * as React from 'react';
+import { connect, DispatchProp } from 'react-redux';
 import { Link, NavLink, Route, Switch } from 'react-router-dom';
+import { UpdateTimeAction } from '../store/actions';
 import './App.css';
 import BSTClock from './BSTClock/BSTClock';
 import ClockMessage from './ClockMessage/ClockMessage';
@@ -9,20 +11,17 @@ import logo from './logo.svg';
 import TimezoneClock from './TimezoneClock/TimezoneClock';
 
 interface IAppState {
-  time: number;
   value?: string;
 }
 
-class App extends React.Component<{}, IAppState> {
+class App extends React.Component<DispatchProp, IAppState> {
 
   constructor(props: any) {
     super(props);
-    this.state = { time: new Date().getTime() };
     this.tick = this.tick.bind(this);
     setInterval(() => this.tick(), 1000);
+    this.state = { value: '' };
     this.handleInput = this.handleInput.bind(this);
-    this.generateBSTClock = this.generateBSTClock.bind(this);
-    this.generateTimezoneClock = this.generateTimezoneClock.bind(this);
   }
 
   public handleInput(e: React.ChangeEvent<HTMLInputElement>) {
@@ -72,32 +71,20 @@ class App extends React.Component<{}, IAppState> {
         {/* <Route path="/BST" component={BSTClock}/>
             <Route exact={true} path="/" component={ClockMessage}/> */}
         <Switch>
-          <Route path="/BST" render={this.generateBSTClock}/>
-          <Route path="/:tz" render={this.generateTimezoneClock}/>
+          <Route path="/BST" component={BSTClock}/>
+          <Route path="/:tz" component={TimezoneClock}/>
           <Route component={ClockMessage}/>
         </Switch>
       </div>
     );
   }
 
-  private generateTimezoneClock(props: any) {
-    return <TimezoneClock time={this.state.time} {...props}/>
-    /*
-    React.createElement(
-      "TimezoneClock",
-      { time: ..., ...props }
-    )
-    */
-  }
-
-  private generateBSTClock() {
-    return <BSTClock time={this.state.time}/>
-  }
-
   private tick() {
-    this.setState({ time: new Date().getTime() });
+    const payload = new Date().getTime();
+    const action = new UpdateTimeAction(payload);
+    this.props.dispatch({...action});
   }
 
 }
 
-export default App;
+export default connect()(App);

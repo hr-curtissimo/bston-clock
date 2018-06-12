@@ -11,8 +11,7 @@ interface IBSTClockProps {
 }
 
 const BSTClock = (props: IBSTClockProps) => (
-  <Clock time={props.time}
-         timezone={timezone}/>
+  <Clock timezone={timezone}/>
 );
 
 export default BSTClock;

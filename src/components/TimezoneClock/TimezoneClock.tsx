@@ -22,8 +22,7 @@ const timezones = {
 
 const TimezoneClock = (props: INeedTime & RouteComponentProps<ITimezoneClockMatchProps>) => {
   return props.match.params.tz !== 'MDT'
-  ?  <Clock timezone={timezones[props.match.params.tz]}
-            time={props.time}/>
+  ?  <Clock timezone={timezones[props.match.params.tz]}/>
   : <Redirect to="/EDT"/>;
 };
 
