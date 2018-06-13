@@ -2,10 +2,11 @@ import { Actions, ActionTypes } from "./actions";
 
 export interface IState {
   time: number;
+  router?: { location: { pathname: string } };
 }
 
-const initialState: IState = {
-  time: 0
+export const initialState: IState = {
+  time: 0,
 };
 
 export function rootReducer(currentState = initialState, action: Actions) {
