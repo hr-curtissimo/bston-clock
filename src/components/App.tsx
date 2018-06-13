@@ -5,7 +5,6 @@ import { History } from 'history';
 import * as React from 'react';
 import { connect, DispatchProp } from 'react-redux';
 import { Link, NavLink, Route, Switch } from 'react-router-dom';
-import { UpdateTimeAction } from '../store/actions';
 import { IState } from '../store/reducers';
 import './App.css';
 import BSTClock from './BSTClock/BSTClock';
@@ -26,8 +25,6 @@ class App extends React.Component<DispatchProp & IAppProps, IAppState> {
 
   constructor(props: DispatchProp & IAppProps) {
     super(props);
-    this.tick = this.tick.bind(this);
-    setInterval(() => this.tick(), 1000);
     this.state = { value: '' };
     this.handleInput = this.handleInput.bind(this);
   }
@@ -89,12 +86,6 @@ class App extends React.Component<DispatchProp & IAppProps, IAppState> {
     );
   }
 
-  private tick() {
-    const payload = new Date().getTime();
-    const action = new UpdateTimeAction(payload);
-    this.props.dispatch(action);
-  }
-
 }
 
 const mapStateToProps = (state: IState) => {
@@ -103,4 +94,6 @@ const mapStateToProps = (state: IState) => {
   };
 };
 
-export default connect(mapStateToProps)(App);
+export default connect(
+  mapStateToProps
+)(App);

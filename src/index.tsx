@@ -3,12 +3,14 @@ import { createBrowserHistory } from 'history';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { applyMiddleware, compose, createStore } from 'redux';
+import { Action, applyMiddleware, compose, createStore } from 'redux';
+import thunk, { ThunkDispatch } from 'redux-thunk';
 import App from './components/App';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
+import { startTicker } from './store/async-actions';
 import { handleClassObjectsForRedux } from './store/middleware';
-import { rootReducer } from './store/reducers';
+import { IState, rootReducer } from './store/reducers';
 import { initialState } from './store/reducers';
 
 /* tslint:disable */
@@ -24,11 +26,17 @@ const store = createStore(
   connectRouter(history)(rootReducer),
   initialState,
   compose(
-    applyMiddleware(routerMiddleware(history)),
-    applyMiddleware(handleClassObjectsForRedux),
+    applyMiddleware(
+      routerMiddleware(history),
+      handleClassObjectsForRedux,
+      thunk
+    ),
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
 );
+
+const dispatch = store.dispatch as ThunkDispatch<IState, void, Action>;
+dispatch(startTicker());
 
 ReactDOM.render(
   <Provider store={store}>
