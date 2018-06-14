@@ -1,5 +1,5 @@
-import * as React from 'react';
 import { shallow } from 'enzyme';
+import * as React from 'react';
 import { TickerControl } from './TickerControl';
 
 test('calls stopTicker when the stop button is clicked', () => {
