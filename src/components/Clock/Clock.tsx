@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { IState } from '../../store/reducers';
+import { Keith as KC } from './Keith';
 
 interface IClockProps {
   time: number;
@@ -11,10 +12,12 @@ function formatDate(d: Date) {
   return `${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
 }
 
-const Clock = (props: IClockProps) => {
+export const Clock = (props: IClockProps) => {
   const t = new Date(props.time - (props.timezone.offset) * 1000 * 60)
 
-  return <time>{formatDate(t)} {props.timezone.name}</time>
+  return (
+    <time>{formatDate(t)} <KC /> {props.timezone.name}</time>
+  )
 };
 
 const mapStateToProps = (state: IState) => {
