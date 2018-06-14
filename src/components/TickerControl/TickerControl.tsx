@@ -10,10 +10,10 @@ interface ITickerControlProps {
   stopTicker: () => any;
 }
 
-const TickerControl = (props: ITickerControlProps) => (
+export const TickerControl = (props: ITickerControlProps) => (
   <div>
-    <button onClick={props.startTicker}>Start</button>
-    <button onClick={props.stopTicker}>Stop</button>
+    <button id="button-start" onClick={props.startTicker}>Start</button>
+    <button id="button-stop" onClick={props.stopTicker}>Stop</button>
   </div>
 );
 

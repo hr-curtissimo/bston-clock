@@ -68,3 +68,16 @@ test('mount: Clock renders time with timezone', () => {
     }, 0);
   });
 });
+
+test('renders consistently', () => {
+  // ARRANGE
+  const time = 123;
+  const timezone = { name: 'BOB', offset: -3.14 };
+
+  // ACTu
+  const tree = renderer
+    .create(<Clock time={time} timezone={timezone}/>)
+    .toJSON();
+
+  expect(tree).toMatchSnapshot();
+});
