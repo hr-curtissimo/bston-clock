@@ -1,6 +1,7 @@
-import * as React from 'react';
-import { Clock } from './Clock';
 import { mount, render, shallow } from 'enzyme';
+import * as React from 'react';
+import * as renderer from 'react-test-renderer';
+import { Clock } from './Clock';
 
 import { Keith } from './Keith';
 

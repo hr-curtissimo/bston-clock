@@ -3,13 +3,14 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import * as React from 'react';
-import { connect, DispatchProp } from 'react-redux';
+import { connect } from 'react-redux';
 import { Link, NavLink, Route, Switch } from 'react-router-dom';
 import { IState } from '../store/reducers';
 import './App.css';
 import BSTClock from './BSTClock/BSTClock';
 import ClockMessage from './ClockMessage/ClockMessage';
 import logo from './logo.svg';
+import TickerControl from './TickerControl/TickerControl';
 import TimezoneClock from './TimezoneClock/TimezoneClock';
 
 interface IAppState {
@@ -21,9 +22,9 @@ interface IAppProps {
   pathname: string;
 }
 
-class App extends React.Component<DispatchProp & IAppProps, IAppState> {
+class App extends React.Component<IAppProps, IAppState> {
 
-  constructor(props: DispatchProp & IAppProps) {
+  constructor(props:  IAppProps) {
     super(props);
     this.state = { value: '' };
     this.handleInput = this.handleInput.bind(this);
@@ -73,6 +74,8 @@ class App extends React.Component<DispatchProp & IAppProps, IAppState> {
               <Link to="/MDT">MDT</Link>
             </li>
           </ul>
+
+          <TickerControl />
 
           {/* <Route path="/BST" component={BSTClock}/>
               <Route exact={true} path="/" component={ClockMessage}/> */}
