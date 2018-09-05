@@ -15,7 +15,7 @@ export function startTicker() {
     if (!handle) {
       dispatch(createAction());
       handle = window.setInterval(() => {
-        (createAction());
+        dispatch(createAction());
       }, 1000);
     };
   }
